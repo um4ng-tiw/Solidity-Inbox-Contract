@@ -9,6 +9,7 @@ const { interface, bytecode } = require("../compile");
 // provider will change to rinkeby/ropstein to connect to the test n/w
 const web3 = new Web3(ganache.provider());
 
+const initialMessage = "Hello world Umang";
 let fetchedAccounts;
 let inbox;
 
@@ -19,7 +20,7 @@ beforeEach(async () => {
   inbox = await new web3.eth.Contract(JSON.parse(interface))
     .deploy({
       data: bytecode,
-      arguments: ["Hello world Umang"], //Arguments expected by the constructor function
+      arguments: [initialMessage], //Arguments expected by the constructor function
     })
     .send({ from: fetchedAccounts[0], gas: "1000000" });
 });
@@ -27,6 +28,11 @@ beforeEach(async () => {
 describe("Inbox contract", () => {
   it("deploys a contract", () => {
     assert.ok(inbox.options.address);
+  });
+
+  it("contains the initial message", async () => {
+    const message = await inbox.methods.message().call();
+    assert.equal(message, initialMessage);
   });
 });
 
