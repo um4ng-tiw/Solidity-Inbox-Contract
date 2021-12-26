@@ -34,6 +34,14 @@ describe("Inbox contract", () => {
     const message = await inbox.methods.message().call();
     assert.equal(message, initialMessage);
   });
+
+  it("changes the message", async () => {
+    await inbox.methods
+      .setMessage("New hello world")
+      .send({ from: fetchedAccounts[0] });
+    const message = await inbox.methods.message().call();
+    assert.equal(message, "New hello world");
+  });
 });
 
 // Demo tests
