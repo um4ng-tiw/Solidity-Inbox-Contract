@@ -8,16 +8,18 @@ const Web3 = require("web3"); //Constructor so capital. We will have to create a
 // provider will change to rinkeby/ropstein to connect to the test n/w
 const web3 = new Web3(ganache.provider());
 
-beforeEach(() => {
+let fetchedAccounts;
+
+beforeEach(async () => {
   // Getting list of all accounts from ganache
-  web3.eth.getAccounts().then((fetchedAccounts) => {
-    console.log(fetchedAccounts);
-  });
+  fetchedAccounts = await web3.eth.getAccounts();
   // Use one of the accounts to deploy the contract
 });
 
 describe("Inbox contract", () => {
-  it("deploys a contract", () => {});
+  it("deploys a contract", () => {
+    console.log(fetchedAccounts);
+  });
 });
 
 // Demo tests
